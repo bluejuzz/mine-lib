@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:background="@drawable/border_write_gray"
+              android:gravity="center"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:gravity="center"
+            android:id="@+id/dlg_tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_65"
+            android:layout_gravity="center"
+            android:text="您确定要退出当前账户吗?"
+            android:textColor="@color/color_333333"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_0.66"
+            android:background="@color/color_ffffff"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_48">
+
+            <Button
+                android:background="@drawable/selector_button_negative"
+                android:id="@+id/dlg_btn_negative"
+                android:layout_width="@dimen/dp_0"
+                android:textColor="@color/color_666666"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="取消"/>
+
+            <Button
+                android:background="@drawable/selector_button_positive"
+                android:id="@+id/dlg_btn_positive"
+                android:layout_width="@dimen/dp_0"
+                android:textColor="@color/color_ffffff"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="确认"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

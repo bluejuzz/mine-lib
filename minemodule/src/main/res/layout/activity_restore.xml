@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_dedede">
+
+    <com.skylink.android.commonlibrary.ui.AppHeader
+        android:id="@+id/datamanagement_header"
+        xmlns:header="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_48"
+        header:left="1"
+        header:right="0"
+        header:middle="0"
+        header:text_title="数据删除与修复"
+        header:backgroundColor="@color/color_0068ff"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_12"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginBottom="@dimen/dp_10"
+                android:layout_marginRight="@dimen/dp_12">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="基础数据删除"
+                    android:textSize="@dimen/font_size_14"
+                    android:textColor="@color/color_888888"
+                    android:layout_centerVertical="true"/>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_f5f5f5"
+                android:paddingLeft="@dimen/dp_12"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/datamanagement_rellayout_org"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginBottom="@dimen/dp_10">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="机构信息"
+                        android:textColor="@color/color_333333"
+                        android:textSize="@dimen/font_size_14"
+                        android:layout_centerVertical="true"/>
+
+
+                    <TextView
+                        android:id="@+id/datamanagement_button_org"
+                        android:layout_width="@dimen/dp_64"
+                        android:layout_height="@dimen/dp_24"
+                        android:gravity="center"
+                        android:text="删除"
+                        android:textSize="@dimen/font_size_12"
+                        android:textColor="@drawable/selector_textcolor_blue_gray"
+                        android:background="@drawable/selector_btn_bg_2dc1cf_corner"
+                        android:layout_alignParentRight="true"
+                        android:visibility="visible"
+                        android:layout_marginRight="@dimen/dp_12"
+                        android:layout_centerVertical="true"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/datamanagement_rellayout_customer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginBottom="@dimen/dp_10">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="客户信息"
+                        android:textColor="@color/color_333333"
+                        android:textSize="@dimen/font_size_14"
+                        android:layout_centerVertical="true"/>
+
+
+                    <TextView
+                        android:id="@+id/datamanagement_button_customer"
+                        android:layout_width="@dimen/dp_64"
+                        android:layout_height="@dimen/dp_24"
+                        android:gravity="center"
+                        android:text="删除"
+                        android:textSize="@dimen/font_size_12"
+                        android:textColor="@drawable/selector_textcolor_blue_gray"
+                        android:background="@drawable/selector_btn_bg_2dc1cf_corner"
+                        android:layout_alignParentRight="true"
+                        android:visibility="visible"
+                        android:layout_marginRight="@dimen/dp_12"
+                        android:layout_centerVertical="true"/>
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/datamanagement_rellayout_goods"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginBottom="@dimen/dp_10">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="商品信息"
+                        android:textColor="@color/color_333333"
+                        android:textSize="@dimen/font_size_14"
+                        android:layout_centerVertical="true"/>
+
+
+                    <TextView
+                        android:id="@+id/datamanagement_button_goods"
+                        android:layout_width="@dimen/dp_64"
+                        android:layout_height="@dimen/dp_24"
+                        android:gravity="center"
+                        android:text="删除"
+                        android:textSize="@dimen/font_size_12"
+                        android:textColor="@drawable/selector_textcolor_blue_gray"
+                        android:background="@drawable/selector_btn_bg_2dc1cf_corner"
+                        android:layout_alignParentRight="true"
+                        android:visibility="visible"
+                        android:layout_marginRight="@dimen/dp_12"
+                        android:layout_centerVertical="true"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/datamanagement_rellayout_goodsStock"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginBottom="@dimen/dp_10">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="商品库存信息"
+                        android:textColor="@color/color_333333"
+                        android:textSize="@dimen/font_size_14"
+                        android:layout_centerVertical="true"/>
+
+
+                    <TextView
+                        android:id="@+id/datamanagement_button_goodsStock"
+                        android:layout_width="@dimen/dp_64"
+                        android:layout_height="@dimen/dp_24"
+                        android:gravity="center"
+                        android:text="删除"
+                        android:textSize="@dimen/font_size_12"
+                        android:textColor="@drawable/selector_textcolor_blue_gray"
+                        android:background="@drawable/selector_btn_bg_2dc1cf_corner"
+                        android:layout_alignParentRight="true"
+                        android:visibility="visible"
+                        android:layout_marginRight="@dimen/dp_12"
+                        android:layout_centerVertical="true"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/datamanagement_rellayout_groupItem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginBottom="@dimen/dp_10">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="分组价格信息"
+                        android:textColor="@color/color_333333"
+                        android:textSize="@dimen/font_size_14"
+                        android:layout_centerVertical="true"/>
+
+
+                    <TextView
+                        android:id="@+id/datamanagement_button_groupItem"
+                        android:layout_width="@dimen/dp_64"
+                        android:layout_height="@dimen/dp_24"
+                        android:gravity="center"
+                        android:text="删除"
+                        android:textSize="@dimen/font_size_12"
+                        android:textColor="@drawable/selector_textcolor_blue_gray"
+                        android:background="@drawable/selector_btn_bg_2dc1cf_corner"
+                        android:layout_alignParentRight="true"
+                        android:visibility="visible"
+                        android:layout_marginRight="@dimen/dp_12"
+                        android:layout_centerVertical="true"/>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_12"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginBottom="@dimen/dp_10"
+                android:layout_marginRight="@dimen/dp_12">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="数据状态修复"
+                    android:textSize="@dimen/font_size_14"
+                    android:textColor="@color/color_888888"
+                    android:layout_centerVertical="true"/>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_f5f5f5"
+                android:paddingLeft="@dimen/dp_12"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/datamanagement_rellayout_downloadData"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginBottom="@dimen/dp_10">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="下载数据状态"
+                        android:textColor="@color/color_333333"
+                        android:textSize="@dimen/font_size_14"
+                        android:layout_centerVertical="true"/>
+
+
+                    <TextView
+                        android:id="@+id/datamanagement_button_downloadData"
+                        android:layout_width="@dimen/dp_64"
+                        android:layout_height="@dimen/dp_24"
+                        android:gravity="center"
+                        android:text="修复"
+                        android:textSize="@dimen/font_size_12"
+                        android:textColor="@drawable/selector_textcolor_blue_gray"
+                        android:background="@drawable/selector_btn_bg_2dc1cf_corner"
+                        android:layout_alignParentRight="true"
+                        android:visibility="visible"
+                        android:layout_marginRight="@dimen/dp_12"
+                        android:layout_centerVertical="true"/>
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/datamanagement_rellayout_uploadOrderData"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginBottom="@dimen/dp_10">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="订单数据状态"
+                        android:textColor="@color/color_333333"
+                        android:textSize="@dimen/font_size_14"
+                        android:layout_centerVertical="true"/>
+
+
+                    <TextView
+                        android:id="@+id/datamanagement_button_uploadOrderData"
+                        android:layout_width="@dimen/dp_64"
+                        android:layout_height="@dimen/dp_24"
+                        android:gravity="center"
+                        android:text="修复"
+                        android:textSize="@dimen/font_size_12"
+                        android:textColor="@drawable/selector_textcolor_blue_gray"
+                        android:background="@drawable/selector_btn_bg_2dc1cf_corner"
+                        android:layout_alignParentRight="true"
+                        android:visibility="visible"
+                        android:layout_marginRight="@dimen/dp_12"
+                        android:layout_centerVertical="true"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/datamanagement_rellayout_uploadPhotoData"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginBottom="@dimen/dp_10">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="照片数据状态"
+                        android:textColor="@color/color_333333"
+                        android:textSize="@dimen/font_size_14"
+                        android:layout_centerVertical="true"/>
+
+
+                    <TextView
+                        android:id="@+id/datamanagement_button_uploadPhotoData"
+                        android:layout_width="@dimen/dp_64"
+                        android:layout_height="@dimen/dp_24"
+                        android:gravity="center"
+                        android:text="修复"
+                        android:textSize="@dimen/font_size_12"
+                        android:textColor="@drawable/selector_textcolor_blue_gray"
+                        android:background="@drawable/selector_btn_bg_2dc1cf_corner"
+                        android:layout_alignParentRight="true"
+                        android:visibility="visible"
+                        android:layout_marginRight="@dimen/dp_12"
+                        android:layout_centerVertical="true"/>
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/datamanagement_rellayout_signData"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginBottom="@dimen/dp_10">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="签到数据状态"
+                        android:textColor="@color/color_333333"
+                        android:textSize="@dimen/font_size_14"
+                        android:layout_centerVertical="true"/>
+
+
+                    <TextView
+                        android:id="@+id/datamanagement_button_signData"
+                        android:layout_width="@dimen/dp_64"
+                        android:layout_height="@dimen/dp_24"
+                        android:gravity="center"
+                        android:text="修复"
+                        android:textSize="@dimen/font_size_12"
+                        android:textColor="@drawable/selector_textcolor_blue_gray"
+                        android:background="@drawable/selector_btn_bg_2dc1cf_corner"
+                        android:layout_alignParentRight="true"
+                        android:visibility="visible"
+                        android:layout_marginRight="@dimen/dp_12"
+                        android:layout_centerVertical="true"/>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+
+
+
+</LinearLayout>
