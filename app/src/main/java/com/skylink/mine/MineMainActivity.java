@@ -3,6 +3,9 @@ package com.skylink.mine;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+/**
+ * @author Administrator
+ */
 public class MineMainActivity extends AppCompatActivity {
 
     @Override
