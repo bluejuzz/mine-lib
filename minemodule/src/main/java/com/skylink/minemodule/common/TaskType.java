@@ -81,6 +81,12 @@ public class TaskType {
     public final  static String BUS_STOCKQTY_TXT="t_ven_stockqty.txt";
     public final  static String BUSNAME_STOCKQTY="商品库存信息";
 
+    /**
+     * 仓库商品信息
+     */
+    public final  static int BUS_INVENTORY=3104;
+    public final  static String BUSNAME_INVENTORY="仓库商品信息";
+
 
     /**
      * 客户信息
@@ -124,6 +130,21 @@ public class TaskType {
     public final  static int BUS_GPRICEHIS=5102;
     public final  static String BUS_GPRICEHIS_TXT="t_ven_gpricehis.txt";
     public final  static String BUSNAME_GPRICEHIS="历史价格信息";
+
+
+    /**
+     * 盘点单据信息
+     */
+    public final  static int BUS_STKPDYK=8101;
+    public final  static String BUSNAME_STKPDYK="盘点单据信息";
+
+    /**
+     * 拣货单据信息
+     */
+    public final  static int BUS_STKPICK=8102;
+    public final  static String BUSNAME_STKPICK="拣货单据信息";
+
+
 
 
     /**

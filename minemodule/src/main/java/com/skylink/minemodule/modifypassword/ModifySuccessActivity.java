@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import com.skylink.android.commonlibrary.base.BaseActivity;
 import com.skylink.android.commonlibrary.ui.AppHeader;
 import com.skylink.minemodule.R;
@@ -44,13 +43,13 @@ public class ModifySuccessActivity extends BaseActivity {
     protected void initView(View view) {
         header = view.findViewById(R.id.success_header);
         tv_mod_success = view.findViewById(R.id.tv_mod_success);
-        button_confirm = view. findViewById(R.id.button_confirm);
+        button_confirm = view.findViewById(R.id.button_confirm);
         switch (type){
             case FROM_MOD_PASSWORD:
                 header.setTitle("修改密码");
                 tv_mod_success.setText("修改密码成功");
-                button_confirm.setVisibility(View.INVISIBLE);
-                showToast("请更新账号信息，否则更改的密码无效！");
+                button_confirm.setVisibility(View.VISIBLE);
+                showToast("请重新登录，否则更改的密码无效！");
                 break;
             case FROM_MOD_PHONE:
                 header.setTitle("修改手机号码");

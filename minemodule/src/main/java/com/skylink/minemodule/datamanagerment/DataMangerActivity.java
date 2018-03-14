@@ -8,7 +8,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.skylink.android.commonlibrary.base.BaseActivity;
 import com.skylink.android.commonlibrary.ui.AppHeader;
 import com.skylink.android.commonlibrary.util.NetworkUtils;
@@ -50,6 +49,8 @@ public class DataMangerActivity extends BaseActivity {
     private final int TYPE_WIFI = 2;
     private final int TYPE_MOBILE = 3;
 
+    private String currentApplicationid;
+
     @Override
     protected void receiveParms(Bundle parms) {
 
@@ -80,6 +81,12 @@ public class DataMangerActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        currentApplicationid = SPUtils.getInstance().getString(Constant.SP_NAME.PLUGIN_CURRENT);
+        if (currentApplicationid.equals("com.skylink.venderorder")) {
+            rellayout_photoatuupload.setVisibility(View.VISIBLE);
+        } else if (currentApplicationid.equals("com.skylink.pdastock")) {
+            rellayout_photoatuupload.setVisibility(View.GONE);
+        }
         mAutoDownloadType = SPUtils.getInstance().getInt(Constant.SPUtilsKey.KEY_AUTO_DOWNLOAD_DATA);
         mOrderAutoUploadType = SPUtils.getInstance().getInt(Constant.SPUtilsKey.KEY_AUTO_UPLOAD_ORDER);
         mPhotoAutoUploadType = SPUtils.getInstance().getInt(Constant.SPUtilsKey.KEY_AUTO_UPLOAD_PHOTO);
@@ -113,7 +120,13 @@ public class DataMangerActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (NetworkUtils.isConnected()) {
-                   startActivity(DataDownloadActivity.class);
+
+                    String currentApplicationid = SPUtils.getInstance().getString(Constant.SP_NAME.PLUGIN_CURRENT);
+                    if (currentApplicationid.equals("com.skylink.venderorder")){
+                        startActivity(DataDownloadActivity.class);
+                    }else if (currentApplicationid.equals("com.skylink.pdastock")){
+                        startActivity(StockDataDownloadActivity.class);
+                    }
                 } else {
                     showErr("亲，当前网络不可用，请确保网络良好再来试试哦！");
                 }

@@ -13,6 +13,7 @@ public class CBaseDataResponse {
     private List<CBaseDataBean> customerInfos;
     private List<CBaseDataBean> baseInfos;
     private List<CBaseDataBean> groupPriceInfos;
+    private List<CBaseDataBean> orderInfos;
 
     public List<CBaseDataBean> getAccountInfos() {
         return accountInfos;
@@ -52,5 +53,13 @@ public class CBaseDataResponse {
 
     public void setGroupPriceInfos(List<CBaseDataBean> groupPriceInfos) {
         this.groupPriceInfos = groupPriceInfos;
+    }
+
+    public List<CBaseDataBean> getOrderInfos() {
+        return orderInfos;
+    }
+
+    public void setOrderInfos(List<CBaseDataBean> orderInfos) {
+        this.orderInfos = orderInfos;
     }
 }

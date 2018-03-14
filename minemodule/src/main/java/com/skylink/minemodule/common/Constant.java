@@ -34,7 +34,6 @@ public class Constant {
      * intent携带参数键值对的key
      */
     public final static class INTENT_PARAM_KEY {
-
         /**
          * 同步数据信息
          */
@@ -44,8 +43,30 @@ public class Constant {
          * 上传数据
          */
         public final static String KEY_UPDATETASKTYPE="key_updatetasktype";
+    }
 
+    /**
+     * 插件名称
+     */
+    public final static class PLUG_NAME {
+        public final static String PLUG_DATA = "basedata_plugin.apk";
+        public final static String PLUG_BUSSINESS = "venderorder_plugin.apk";
 
+    }
+
+    /**
+     * sp值
+     */
+    public final static class SP_NAME{
+        /**
+         * 插件信息
+         */
+        public final static String PLUGIN_INFO="plugin_info";
+
+        /**
+         * 当前插件
+         */
+        public final static String PLUGIN_CURRENT="plugin_current";
     }
 
     /***
@@ -57,5 +78,6 @@ public class Constant {
         public static final String CUSTORMINFO = "客户信息";
         public static final String BASEINFO = "基础资料";
         public static final String GROUPPRICEINFO = "分组价格信息";
+        public static final String ORDERINFO = "单据信息";
     }
 }

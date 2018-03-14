@@ -3,23 +3,33 @@ package com.skylink.minemodule.modifypassword;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import com.skylink.android.commonlibrary.base.BaseActivity;
 import com.skylink.android.commonlibrary.base.BaseResponse;
+import com.skylink.android.commonlibrary.constant.SPContants;
+import com.skylink.android.commonlibrary.entity.LoginResponse;
 import com.skylink.android.commonlibrary.netutil.RetrofitCallback;
 import com.skylink.android.commonlibrary.netutil.RetrofitUtils;
 import com.skylink.android.commonlibrary.ui.AppHeader;
 import com.skylink.android.commonlibrary.ui.ClearEditText;
+import com.skylink.android.commonlibrary.util.SPUtils;
 import com.skylink.android.commonlibrary.util.StringUtils;
 import com.skylink.minemodule.R;
 import com.skylink.minemodule.common.MineService;
 import com.skylink.minemodule.modifypassword.bean.ModifyPswdRequest;
 
 import retrofit2.Call;
+
+import static android.R.id.message;
 
 /**
  * 修改密码
@@ -58,10 +68,9 @@ public class ModifyPasswordActivity extends BaseActivity {
         edit_opassword = view.findViewById(R.id.changepassword_edit_opassword);
         edit_npassword = view.findViewById(R.id.changepassword_edit_npassword);
         edit_rpassword = view.findViewById(R.id.changepassword_edit_rpassword);
-
         button_confirm = view.findViewById(R.id.changepassword_button_confirm);
         mHeader = view.findViewById(R.id.changepassword_header);
-
+        show_password = f(R.id.changepassword_img_show_password);
     }
 
     @Override
@@ -97,6 +106,31 @@ public class ModifyPasswordActivity extends BaseActivity {
                 modifyPassword(edit_opassword.getText().toString().trim(),edit_npassword.getText().toString().trim(),edit_rpassword.getText().toString().trim());
             }
         });
+
+        //显示隐藏密码
+        show_password.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    // 显示密码
+                    edit_opassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    edit_opassword.setSelection(edit_opassword.getText().toString().length());
+                    edit_npassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    edit_npassword.setSelection(edit_npassword.getText().toString().length());
+                    edit_rpassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    edit_rpassword.setSelection(edit_rpassword.getText().toString().length());
+                }
+                else {
+                    // 隐藏密码
+                    edit_opassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    edit_opassword.setSelection(edit_opassword.getText().toString().length());
+                    edit_npassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    edit_npassword.setSelection(edit_npassword.getText().toString().length());
+                    edit_rpassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    edit_rpassword.setSelection(edit_rpassword.getText().toString().length());
+                }
+            }
+        });
     }
 
     /***
@@ -105,7 +139,7 @@ public class ModifyPasswordActivity extends BaseActivity {
      * @param npwd
      * @param rpwd
      */
-    private void modifyPassword(String opwd, String npwd, String rpwd) {
+    private void modifyPassword(String opwd, final String npwd, String rpwd) {
         if (!validationData(opwd,npwd,rpwd)){
             return;
         }
@@ -117,7 +151,21 @@ public class ModifyPasswordActivity extends BaseActivity {
             @Override
             public void onSuccess(BaseResponse response) {
               if (response.isSuccess()){
-                   skipSuccess();
+                  LoginResponse loginResponse = null;
+                  String loginInfoStr = SPUtils.getInstance(SPContants.APP_SP_NAME).getString(SPContants.LOGIN_INFO);
+                  if (null != loginInfoStr) {
+                      try {
+                          loginResponse = new Gson().fromJson(loginInfoStr, new TypeToken<LoginResponse>() {
+                          }.getType());
+                      } catch (JsonSyntaxException e) {
+                          e.printStackTrace();
+                      }
+                      loginResponse.getUserinfo().setPassword("");
+                      loginResponse.getUserinfo().setLocalPassword(npwd);
+                      String loginResponseStr = new Gson().toJson(loginResponse);
+                      SPUtils.getInstance(SPContants.APP_SP_NAME).put(SPContants.LOGIN_INFO, loginResponseStr);
+                      skipSuccess();
+                  }
               }
             }
 

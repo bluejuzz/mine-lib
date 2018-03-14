@@ -11,6 +11,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
@@ -26,15 +28,18 @@ import com.skylink.android.commonlibrary.util.SPUtils;
 import com.skylink.minemodule.R;
 import com.skylink.minemodule.common.Constant;
 import com.skylink.minemodule.common.MineService;
+import com.skylink.minemodule.common.PluginInfo;
 import com.skylink.minemodule.datamanagerment.DataMangerActivity;
 import com.skylink.minemodule.modifypassword.ModifyPasswordActivity;
+
+import java.io.File;
+import java.util.List;
 
 import retrofit2.Call;
 
 
 /**
  * 我的模块主界面
- *
  * @author Administrator
  */
 public class MineActivity extends BaseActivity {
@@ -61,6 +66,8 @@ public class MineActivity extends BaseActivity {
 
     private RelativeLayout mine_rl_dataSyncConfig;
 
+    private RelativeLayout mine_rl_pricesetting;
+
     private CheckBox mine_cb_priceConfig;
 
     private boolean auto_convert_price;
@@ -70,6 +77,12 @@ public class MineActivity extends BaseActivity {
     private RadioButton wq_rb;
 
     private RadioButton cc_rb;
+
+    private View line_price;
+
+    private String currentApplicationid;
+
+    private List<PluginInfo> pluginInfoList;
 
     @Override
     protected void receiveParms(Bundle parms) {
@@ -98,6 +111,8 @@ public class MineActivity extends BaseActivity {
         wq_rb = f(R.id.printsetting_rb_wq);
         cc_rb = f(R.id.printsetting_rb_cc);
         mRadioGroup = f(R.id.mine_rg_choosebussness);
+        mine_rl_pricesetting = f(R.id.mine_rl_pricesetting);
+        line_price = f(R.id.mine_line_price);
     }
 
     @Override
@@ -118,7 +133,22 @@ public class MineActivity extends BaseActivity {
 
         auto_convert_price = SPUtils.getInstance().getBoolean(Constant.SPUtilsKey.KEY_AUTO_PRICE_CONVERT, false);
         mine_cb_priceConfig.setChecked(auto_convert_price);
-        wq_rb.setChecked(true);
+
+        currentApplicationid = SPUtils.getInstance().getString(Constant.SP_NAME.PLUGIN_CURRENT);
+
+
+        String pluginData = SPUtils.getInstance().getString(Constant.SP_NAME.PLUGIN_INFO);
+        pluginInfoList = new Gson().fromJson(pluginData, new TypeToken<List<PluginInfo>>() {
+        }.getType());
+
+
+        if (currentApplicationid.equals("com.skylink.venderorder")){
+            mRadioGroup.check(R.id.printsetting_rb_wq);
+        }else if (currentApplicationid.equals("com.skylink.pdastock")){
+            mRadioGroup.check(R.id.printsetting_rb_cc);
+            mine_rl_pricesetting.setVisibility(View.GONE);
+            line_price.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -190,9 +220,49 @@ public class MineActivity extends BaseActivity {
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-
+                if (checkedId == R.id.printsetting_rb_wq) {
+                    String plugin_name = "com.skylink.venderorder";
+                    if (checkPluginExists(plugin_name)) {
+                        Intent intent = new Intent();
+                        intent.setClassName(plugin_name, "com.skylink.venderorder.OrderHomePageActivity");
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        finish();
+                        SPUtils.getInstance().put(Constant.SP_NAME.PLUGIN_CURRENT, "com.skylink.venderorder");
+                    }
+                } else if (checkedId == R.id.printsetting_rb_cc) {
+                    String plugin_name = "com.skylink.pdastock";
+                    if (checkPluginExists(plugin_name)) {
+                        Intent intent = new Intent();
+                        intent.setClassName(plugin_name, "com.skylink.pdastock.home.view.StockHomePageActivity");
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        finish();
+                        SPUtils.getInstance().put(Constant.SP_NAME.PLUGIN_CURRENT, "com.skylink.pdastock");
+                    }
+                }
             }
         });
+    }
+
+    private boolean checkPluginExists(String pulgin_name) {
+        int count = 0;
+        for (PluginInfo info : pluginInfoList) {
+            if (info.getApplicationid().equals(pulgin_name)) {
+                File plugin = new File(info.getPluginlocalpath());
+                if (!plugin.exists()) {
+                    Toast.makeText(this, "插件不存在,不能进入程序!", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+            }else {
+                count++;
+            }
+            if (count==pluginInfoList.size()){
+                Toast.makeText(this, "插件不存在,不能进入程序!", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
+        return true;
     }
 
     /***
@@ -230,9 +300,6 @@ public class MineActivity extends BaseActivity {
         RetrofitUtils.requestData(baseCall, new RetrofitCallback<BaseResponse<String>>() {
             @Override
             public void onSuccess(BaseResponse<String> response) {
-                if (loginResponse != null) {
-                    loginResponse.setToken("");
-                }
             }
 
             @Override
@@ -242,20 +309,24 @@ public class MineActivity extends BaseActivity {
 
             @Override
             public void onFinish() {
-                //密码置空
-                if (loginResponse != null) {
-                    loginResponse.getUserinfo().setPassword("");
-                    String loginResponseStr = new Gson().toJson(loginResponse);
-                    SPUtils.getInstance(SPContants.APP_SP_NAME).put(SPContants.LOGIN_INFO, loginResponseStr);
-                }
-                Intent intent = new Intent();
-                intent.setClassName("com.skylink.pdavender", "com.skylink.pdavender.login.LoginActivity");
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                showToast("退出成功");
-                finish();
+                exitApp();
             }
         });
+    }
+
+    private void exitApp(){
+        if (loginResponse != null) {
+            loginResponse.setToken("");
+            loginResponse.getUserinfo().setPassword("");
+            String loginResponseStr = new Gson().toJson(loginResponse);
+            SPUtils.getInstance(SPContants.APP_SP_NAME).put(SPContants.LOGIN_INFO, loginResponseStr);
+        }
+        Intent intent = new Intent();
+        intent.setClassName("com.skylink.pdavender", "com.skylink.pdavender.login.LoginActivity");
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        showToast("退出成功");
+        finish();
     }
 
     /***

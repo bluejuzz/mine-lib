@@ -37,26 +37,26 @@ import com.skylink.pdadatacentermodule.basedata.BaseDataService;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.skylink.minemodule.common.TaskType.BUS_INVENTORY;
 
 /***
- * 外勤下单数据下载
- * create by fangj
- * on 2018/1/15
+ * 仓储数据下载
+ * @author fangjin
+ * @date 2018/2/25
  */
-public class DataDownloadActivity extends BaseActivity {
+public class StockDataDownloadActivity extends BaseActivity {
 
-    private AppHeader header;
-
+    private AppHeader mHeader;
     private RecyclerView mRecyclerView;
-
     private BaseGroupAdapter<DataMangerBean.SubItemBean> mBeanBaseGroupAdapter;
-
     private CBaseDataResponse dataResponse;
-
     private List<DataMangerBean.SubItemBean> subItemBeanList;
-
     private DataSyncBean syncBean;
 
+    @Override
+    protected void receiveParms(Bundle bundle) {
+
+    }
 
     private BroadcastReceiver dataSyncReceiver = new BroadcastReceiver() {
         @Override
@@ -78,37 +78,21 @@ public class DataDownloadActivity extends BaseActivity {
         }
     };
 
-    private void registerReceiver() {
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Constant.DATASNYC_RESULT);
-        registerReceiver(dataSyncReceiver, filter);
-    }
-
-
-    @Override
-    protected void receiveParms(Bundle parms) {
-
-    }
-
     @Override
     protected int setLayoutView() {
-        return R.layout.activity_data_download;
+        return R.layout.activity_stock_data_download;
     }
 
     @Override
     protected void initView(View view) {
-        header = f(R.id.datadownload_header);
-        mRecyclerView = f(R.id.datadownload_recyclerview);
-    }
+        mHeader = f(R.id.stockdatadownload_header);
+        mRecyclerView = f(R.id.stockdatadownload_recyclerview);
 
-    @Override
-    protected void initData() {
-        registerReceiver();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.addItemDecoration(new RecycleViewDivider(this, LinearLayoutManager.VERTICAL, R.drawable.listview_divider_line));
 
-        mBeanBaseGroupAdapter = new BaseGroupAdapter<DataMangerBean.SubItemBean>(R.layout.item_datadownload_subitem, R.layout.item_datadownload_head, subItemBeanList) {
+        mBeanBaseGroupAdapter = new BaseGroupAdapter<DataMangerBean.SubItemBean>(R.layout.item_datadownload_subitem, R.layout.item_datadownload_head, null) {
             @Override
             public void convertHeader(BaseViewHolder helper, final DataMangerBean.SubItemBean item) {
                 Button imag_update = helper.getView(R.id.datadownload_button_userInfoDownload);
@@ -116,35 +100,7 @@ public class DataDownloadActivity extends BaseActivity {
 
                 helper.setText(R.id.datadownload_text_userInfo, item.header);
                 helper.setText(R.id.datadownload_text_userInfoDownloadTime, item.getTimeText());
-                //布局点击
-               /* header_realayout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (item.isExpand()){
-                            item.setExpand(false);
-                            for (int i = 0; i <mBeanBaseGroupAdapter.getData().size(); i++) {
-                                DataMangerBean.SubItemBean bean = mBeanBaseGroupAdapter.getItem(i);
-                                if (null!=bean.t){
-                                    if (bean.t.getGroupname().equals(item.header)){
-                                        mBeanBaseGroupAdapter.getItem(i).setExpand(false);
-                                    }
-                                }
-                            }
-                        }else {
-                            item.setExpand(true);
-                            for (int i = 0; i <mBeanBaseGroupAdapter.getData().size(); i++) {
-                                DataMangerBean.SubItemBean bean = mBeanBaseGroupAdapter.getItem(i);
-                                if (null!=bean.t){
-                                    if (bean.t.getGroupname().equals(item.header)){
-                                        mBeanBaseGroupAdapter.getItem(i).setExpand(true);
-                                    }
-                                }
-                            }
-                        }
-                        mBeanBaseGroupAdapter.setNewData(mBeanBaseGroupAdapter.getData());
-                        mBeanBaseGroupAdapter.notifyDataSetChanged();
-                    }
-                });*/
+
                 //头部更新数据
                 imag_update.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -156,12 +112,6 @@ public class DataDownloadActivity extends BaseActivity {
 
             @Override
             public void convertItem(BaseViewHolder helper, DataMangerBean.SubItemBean item) {
-               /* RelativeLayout relayout = helper.getView(R.id.datadownload_rl_layout);
-                if (item.isExpand()) {
-                    relayout.setVisibility(View.VISIBLE);
-                } else {
-                    relayout.setVisibility(View.GONE);
-                }*/
                 CBaseDataBean dataBean = item.t;
                 helper.setText(R.id.datadownload_tv_bussness, dataBean.getBusname());
                 helper.setText(R.id.datadownload_text_org, dataBean.getFailmessage());
@@ -170,17 +120,31 @@ public class DataDownloadActivity extends BaseActivity {
                 progressBar.setProgress(dataBean.getProgress());
             }
         };
+
         mBeanBaseGroupAdapter.setEmptyView(getEmptyView(mRecyclerView, "还未下载该企业的信息，点击一键下载开始下载吧！"));
         mRecyclerView.setAdapter(mBeanBaseGroupAdapter);
+    }
+
+    @Override
+    protected void initData() {
+        registerReceiver();
         searchData();
     }
 
+    private void registerReceiver() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Constant.DATASNYC_RESULT);
+        registerReceiver(dataSyncReceiver, filter);
+    }
 
-    /***
-     * 查询数据
-     */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(dataSyncReceiver);
+    }
+
     private void searchData() {
-        BaseDataService.getInstance().queryBaseDataStatus(Session.getInstance().getLoginResponse().getOrginfo().getEid(), Session.getInstance().getLoginResponse().getUserinfo().getUserid(), new GetDataCallback<String>() {
+        BaseDataService.getInstance().queryCCBaseDataStatus(Session.getInstance().getLoginResponse().getOrginfo().getEid(), Session.getInstance().getLoginResponse().getUserinfo().getUserid(), new GetDataCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 dataResponse = new Gson().fromJson(result, new TypeToken<CBaseDataResponse>() {
@@ -200,12 +164,10 @@ public class DataDownloadActivity extends BaseActivity {
 
             }
         });
-
-
     }
 
     /***
-     * 设置数据
+     * 数据库数据转换
      */
     private void convertData() {
         if (subItemBeanList==null){
@@ -247,24 +209,7 @@ public class DataDownloadActivity extends BaseActivity {
                 }
             }
         }
-       //客户信息
-        List<CBaseDataBean> customerInfos = dataResponse.getCustomerInfos();
-        if (customerInfos != null) {
-            for (int i = 0; i < customerInfos.size(); i++) {
-                CBaseDataBean dataBean = customerInfos.get(i);
-                if (i == 0) {
-                    DataMangerBean.SubItemBean subItemBean = new DataMangerBean.SubItemBean(true, dataBean.getGroupname());
-                    subItemBean.setTimeText(dataBean.getDownloadtime());
-                    subItemBeanList.add(subItemBean);
-                    DataMangerBean.SubItemBean subItemBean1 = new DataMangerBean.SubItemBean(dataBean);
-                    subItemBeanList.add(subItemBean1);
-                } else {
-                    DataMangerBean.SubItemBean subItemBean = new DataMangerBean.SubItemBean(dataBean);
-                    subItemBeanList.add(subItemBean);
-                }
-            }
-        }
-         //基础资料信息
+        //基础资料信息
         List<CBaseDataBean> baseInfos = dataResponse.getBaseInfos();
         if (baseInfos != null) {
             for (int i = 0; i < baseInfos.size(); i++) {
@@ -281,11 +226,11 @@ public class DataDownloadActivity extends BaseActivity {
                 }
             }
         }
-        //价格分组信息
-        List<CBaseDataBean> groupPriceInfos = dataResponse.getGroupPriceInfos();
-        if (groupPriceInfos != null) {
-            for (int i = 0; i < groupPriceInfos.size(); i++) {
-                CBaseDataBean dataBean = groupPriceInfos.get(i);
+       //单据信息
+        List<CBaseDataBean> orderInfos = dataResponse.getOrderInfos();
+        if (orderInfos != null) {
+            for (int i = 0; i < orderInfos.size(); i++) {
+                CBaseDataBean dataBean = orderInfos.get(i);
                 if (i == 0) {
                     DataMangerBean.SubItemBean subItemBean = new DataMangerBean.SubItemBean(true, dataBean.getGroupname());
                     subItemBean.setTimeText(dataBean.getDownloadtime());
@@ -307,7 +252,7 @@ public class DataDownloadActivity extends BaseActivity {
 
     @Override
     protected void initListener() {
-        header.setHeaderClickListener(new AppHeader.OnHeaderButtonClickListener() {
+        mHeader.setHeaderClickListener(new AppHeader.OnHeaderButtonClickListener() {
             @Override
             public void onLeftButtonClick() {
                 finish();
@@ -320,17 +265,26 @@ public class DataDownloadActivity extends BaseActivity {
 
             @Override
             public void onRightButtonClick() {
-
                 datadownloadData();
             }
         });
-
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(dataSyncReceiver);
+    /***
+     * 下载全部数据
+     */
+    private void datadownloadData() {
+        List<Integer> list = new ArrayList<Integer>();
+
+        list.add(TaskType.BUS_ORG);
+        list.add(TaskType.BUS_USER);
+        list.add(TaskType.BUS_STOCK);
+        list.add(TaskType.BUS_MYGOODS);
+        list.add(TaskType.BUS_INVENTORY);
+        list.add(TaskType.BUS_STKPDYK);
+        list.add(TaskType.BUS_STKPICK);
+
+        sendBroadcast(StockDataDownloadActivity.this, new Gson().toJson(list));
     }
 
     /***
@@ -343,55 +297,24 @@ public class DataDownloadActivity extends BaseActivity {
             case Constant.TASKTYPE.ACCOUNTINFO:
                 list.add(TaskType.BUS_ORG);
                 list.add(TaskType.BUS_USER);
-                list.add(TaskType.BUS_USERORG);
-                list.add(TaskType.BUS_USERDEPT);
                 break;
             case Constant.TASKTYPE.GOODSINFO:
-                list.add(TaskType.BUS_MYCATEGORY);
                 list.add(TaskType.BUS_MYGOODS);
-                list.add(TaskType.BUS_STOCKQTY);
-                break;
-            case Constant.TASKTYPE.CUSTORMINFO:
-                list.add(TaskType.BUS_CUSTOMER);
-                list.add(TaskType.BUS_VISITTASK);
-                list.add(TaskType.BUS_GROUPBRANCH);
+                list.add(TaskType.BUS_INVENTORY);
                 break;
             case Constant.TASKTYPE.BASEINFO:
                 list.add(TaskType.BUS_STOCK);
-                list.add(TaskType.BUS_PARAITEM);
                 break;
-            case Constant.TASKTYPE.GROUPPRICEINFO:
-                list.add(TaskType.BUS_GROUPITEM);
-                list.add(TaskType.BUS_GPRICEHIS);
+            case Constant.TASKTYPE.ORDERINFO:
+                list.add(TaskType.BUS_STKPDYK);
+                list.add(TaskType.BUS_STKPICK);
                 break;
             default:
                 break;
         }
-        sendBroadcast(DataDownloadActivity.this, new Gson().toJson(list));
+        sendBroadcast(StockDataDownloadActivity.this, new Gson().toJson(list));
     }
 
-    /***
-     * 下载全部数据
-     */
-    private void datadownloadData() {
-        List<Integer> list = new ArrayList<Integer>();
-        list.add(TaskType.BUS_ORG);
-        list.add(TaskType.BUS_USER);
-        list.add(TaskType.BUS_USERDEPT);
-        list.add(TaskType.BUS_USERORG);
-        list.add(TaskType.BUS_STOCK);
-        list.add(TaskType.BUS_PARAITEM);
-        list.add(TaskType.BUS_MYCATEGORY);
-        list.add(TaskType.BUS_MYGOODS);
-        list.add(TaskType.BUS_STOCKQTY);
-        list.add(TaskType.BUS_CUSTOMER);
-        list.add(TaskType.BUS_VISITTASK);
-        list.add(TaskType.BUS_GROUPBRANCH);
-        list.add(TaskType.BUS_GROUPITEM);
-        list.add(TaskType.BUS_GPRICEHIS);
-
-        sendBroadcast(DataDownloadActivity.this, new Gson().toJson(list));
-    }
 
     /***
      * 同步并刷新数据

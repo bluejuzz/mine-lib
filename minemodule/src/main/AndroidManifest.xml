@@ -8,48 +8,61 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         tools:replace="android:label">
-        <activity android:name=".mine.MineActivity"
+        <activity
+            android:name=".mine.MineActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="个人中心"
             android:launchMode="singleTop"
             android:multiprocess="false"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden"/>
-        <activity android:name=".modifypassword.ModifyPasswordActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".modifypassword.ModifyPasswordActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="修改密码"
             android:launchMode="singleTop"
             android:multiprocess="false"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden"/>
-        <activity android:name=".modifypassword.ModifySuccessActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".modifypassword.ModifySuccessActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="修改成功"
             android:launchMode="singleTop"
             android:multiprocess="false"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden"/>
-        <activity android:name=".datamanagerment.DataMangerActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".datamanagerment.DataMangerActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="数据管理"
             android:launchMode="singleTop"
             android:multiprocess="false"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden"/>
-        <activity android:name=".datamanagerment.RestoreActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".datamanagerment.RestoreActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="数据修复"
             android:launchMode="singleTop"
             android:multiprocess="false"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden"/>
-        <activity android:name=".datamanagerment.DataDownloadActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".datamanagerment.DataDownloadActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:label="数据下载"
+            android:label="外勤数据下载"
             android:launchMode="singleTop"
             android:multiprocess="false"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden"/>
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity android:name=".datamanagerment.StockDataDownloadActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="仓储数据下载"
+            android:launchMode="singleTop"
+            android:multiprocess="false"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
     </application>
 
 </manifest>

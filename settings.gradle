@@ -1,1 +1,3 @@
 include ':app', ':minemodule'
+include':PDADatacenterModule'
+project(':PDADatacenterModule').projectDir = new File('F:/myimpos/LibraryManager/PDADatacenterModule')

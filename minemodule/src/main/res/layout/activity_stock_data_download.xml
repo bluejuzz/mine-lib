@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_stock_data_download"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_f0eff5">
+    android:background="@color/color_f0eff5"
+    android:orientation="vertical"
+    tools:context="com.skylink.minemodule.datamanagerment.StockDataDownloadActivity">
 
     <com.skylink.android.commonlibrary.ui.AppHeader
-        android:id="@+id/datadownload_header"
+        android:id="@+id/stockdatadownload_header"
         xmlns:header="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_48"
@@ -18,7 +21,7 @@
         header:backgroundColor="@color/color_0068ff"/>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/datadownload_recyclerview"
+        android:id="@+id/stockdatadownload_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
